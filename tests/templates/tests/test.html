@@ -1,0 +1,30 @@
+Test name: {{ test.test_name }}
+<br />
+<hr />
+<form action="{% url 'tests:submit' test.id %}" method="post">
+{% csrf_token %}
+{% for task in test.tasks %}
+  {% if task.task_type == 1 %}
+    {# ugly #}
+    {# Now we have MultipleChoiceTask #}
+    Multiple choice task! Max points: {{ task.max_points }}<br />
+    {% for question in task.mcquestion_set.all %}
+      {{ question.question_text }}
+      ({{ question.points }} points)
+      <br />
+      {% for choice in question.mcquestionchoice_set.all %}
+      <input type="radio" name="choice:{{ task.id }}" id="choice:{{ task.id }}:{{ forloop.counter }}" value="{{ choice.id }}" />
+      <label for="choice:{{ task.id }}:{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+      {% endfor %}
+    {% endfor %}
+  {% elif task.task_type == 2 %}
+    {# ugly #}
+    {# Now we have FillInTask #}
+    Fill In Task! Max points: {{ task.max_points }}<br />
+  {% else %}
+    UNKNOWN TASK: {{ task }}
+  {% endif %}
+  <hr />
+{% endfor %}
+<input type="submit" value="Submit" />
+</form>
