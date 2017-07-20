@@ -23,7 +23,6 @@ class Test(models.Model):
 ###############################
 class Task(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    max_points = models.IntegerField(default=0)
     task_type = models.IntegerField(default=0)
 
     class Meta:
@@ -31,7 +30,13 @@ class Task(models.Model):
 
 ###############################
 class MultipleChoiceTask(Task):
-    pass
+    @property
+    def max_points(self):
+        result = 0
+        for q in self.mcquestion_set.all():
+            result += q.points
+
+        return result
 
 ###############################
 class FillInTask(Task):
@@ -42,7 +47,6 @@ class MCQuestion(models.Model):
     task = models.ForeignKey(MultipleChoiceTask, on_delete=models.CASCADE)
     points = models.IntegerField(default=0)
     question_text = models.CharField(max_length=400)
-    correct_choice = models.ForeignKey('MCQuestionChoice', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.question_text
@@ -51,6 +55,17 @@ class MCQuestion(models.Model):
 class MCQuestionChoice(models.Model):
     question = models.ForeignKey(MCQuestion, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=400)
+    correct = models.BooleanField(default=False)
 
     def __str__(self):
         return self.choice_text
+
+###########################################
+class Submission:
+    '''Submission
+
+TODO
+'''
+    pass
+
+

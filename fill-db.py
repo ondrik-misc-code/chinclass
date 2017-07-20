@@ -4,23 +4,23 @@ import os, django
 MCTaskData = [
         [
             "你為什麼一直站？",
-            "你為什麼一直站著？",
+            ("你為什麼一直站著？", True),
             "你為什麼一直在站？" ],
         [
             "吃芒果很香、很甜。",
             "芒果吃來很香、很甜。",
-            "芒果吃起來很香、很甜。" ],
+            ("芒果吃起來很香、很甜。", True) ],
         [
             "陳月美的家離學校不很遠。",
             "陳月美的家不離學校很遠。",
-            "陳月美的家離學校很不遠。" ],
+            ("陳月美的家離學校很不遠。", True) ],
         [
             "馬安同喜歡一邊吃飯，一邊休息。",
             "馬安同喜歡一邊聽音樂，一邊睡覺。",
-            "馬安同喜歡一邊吃飯，一邊用手機上網。" ],
+            ("馬安同喜歡一邊吃飯，一邊用手機上網。", True) ],
         [
             "田中誠一往學校門口出來從左轉去麵店吃飯。",
-            "田中誠一從學校門口出來往左轉去麵店吃飯。",
+            ("田中誠一從學校門口出來往左轉去麵店吃飯。", True),
             "田中誠一從學校門口出來去左轉往麵店吃飯。" ]
     ]
 
@@ -49,6 +49,13 @@ if __name__ == "__main__":
         print("Added multiple choice question " + str(mcquest.id) + ": \"" + mcquest.question_text + "\" to task " + str(mctask.id))
 
         for ch in quest:
-            choice = MCQuestionChoice(question=mcquest, choice_text=ch)
+            if isinstance(ch, tuple):
+                (ch_text, correct) = ch
+                ch = ch_text
+            else:
+                choice_text = ch
+                correct = False
+
+            choice = MCQuestionChoice(question=mcquest, choice_text=ch, correct=correct)
             choice.save()
-            print("Added MC choice " + str(choice.id) + ": \"" + choice.choice_text + "\" to question " + str(choice.question.id))
+            print("Added MC choice " + str(choice.id) + ": \"" + choice.choice_text + "\" " + ("YES" if correct else "NO") + " to question " + str(choice.question.id))
