@@ -1,0 +1,22 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'titlepage/style.css' %}" />
+<body>
+  <center>
+    <div class="header">
+      力心中文
+    </div>
+  </center>
+
+
+  <div class="newsbox">
+  {% for news in news_list %}
+    <div class="newsarticle">
+    {{ news.title }}: {{ news.text }}
+    <br />
+    added: {{ news.date_created }}
+    <br />
+    user: {{ news.user_added }}
+    </div>
+  {% endfor %}
+  </div>
+</body>
