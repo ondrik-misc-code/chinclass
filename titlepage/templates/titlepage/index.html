@@ -8,15 +8,24 @@
   </center>
 
 
+  <div class="column-main">
   <div class="newsbox">
   {% for news in news_list %}
     <div class="newsarticle">
-    {{ news.title }}: {{ news.text }}
-    <br />
-    added: {{ news.date_created }}
-    <br />
-    user: {{ news.user_added }}
+      <span class="newsarticle-title">
+        {{ news.title }}
+      </span><br/>
+      <span class="newsarticle-text">
+        {{ news.text_english }}
+      </span><br/>
+      <div class="newsarticle-info">
+        added on
+        {{ news.date_created }}
+        by
+        {{ news.user_added }}
+      </div> 
     </div>
   {% endfor %}
+  </div>
   </div>
 </body>

@@ -4,7 +4,9 @@ from django.conf import settings
 # Create your models here.
 class News(models.Model):
     title = models.TextField()
-    text = models.TextField()
+    text_czech = models.TextField()
+    text_english = models.TextField()
+    text_chinese = models.TextField()
     user_added = models.ForeignKey(settings.AUTH_USER_MODEL)
     date_created = models.DateTimeField(auto_now_add=True)
 

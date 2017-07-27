@@ -1,7 +1,7 @@
 body {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	color: #2a303c;
-	background: #5446af;
+	background: #7668cf;
 }
 
 .header {
@@ -13,5 +13,27 @@ body {
 }
 
 .newsarticle {
+	color: black;
+}
+
+.newsarticle-title {
+	font-weight: bold;
+}
+
+.newsarticle-text {
 	
 }
+
+.newsarticle-info {
+	color: #333333;
+	text-align: right;
+}
+
+.column-main {
+	width: 48%;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
