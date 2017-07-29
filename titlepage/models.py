@@ -12,4 +12,4 @@ class News(models.Model):
 
     ###########################################
     def __str__(self):
-        return str((self.title, self.text, self.user_added, self.date_created))
+        return str((self.title, self.text_english, self.user_added, self.date_created))
