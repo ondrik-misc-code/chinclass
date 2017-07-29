@@ -1,0 +1,10 @@
+"""
+Local settings
+"""
+
+DEBUG = False
+
+ALLOWED_HOSTS = [
+    'brnochinese.cz',
+    'brnochinese.com',
+]
