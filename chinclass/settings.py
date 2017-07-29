@@ -26,8 +26,7 @@ SECRET_KEY = open(SECRET_FILE).read().strip()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-]
+ALLOWED_HOSTS = [ ]
 
 
 # Application definition
@@ -126,6 +125,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # store your local settings, e.g. SECRET_KEY, ALLOWED_HOSTS, or DEBUG in local_settings.py
 try:
-    from local_settings import *
+    from .local_settings import *
 except ImportError as e:
     pass
