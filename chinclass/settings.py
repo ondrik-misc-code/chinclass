@@ -27,8 +27,6 @@ SECRET_KEY = open(SECRET_FILE).read().strip()
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'brnochinese.cz',
-    'brnochinese.com',
 ]
 
 
@@ -125,3 +123,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# store your local settings, e.g. SECRET_KEY, ALLOWED_HOSTS, or DEBUG in local_settings.py
+try:
+    from local_settings import *
+except ImportError as e:
+    pass
