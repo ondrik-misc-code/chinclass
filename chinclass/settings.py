@@ -26,7 +26,10 @@ SECRET_KEY = open(SECRET_FILE).read().strip()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'brnochinese.cz',
+    'brnochinese.com',
+]
 
 
 # Application definition
