@@ -1,0 +1,38 @@
+<h1>Test results</h1>
+Student name: <b>{{ subm.student_name }}</b>
+<br />
+Test: <b>{{ subm.test }}</b>
+<br />
+
+{% for task in subm.tasks %}
+  {% if task.task_type == 1 %}
+    {# ugly #}
+    {# Now we have MCTask #}
+    Multiple choice task! Max points: {{ task.max_points }}<br />
+    {% for question in task.mcquestion_set.all %}
+      {{ question.question_text }}
+      ({{ question.points }} points)
+      <br />
+      {% if question.mcquestionchoice_set.all.empty %}
+      {% else %}
+        <ol type="a">
+        {% for choice in question.mcquestionchoice_set.all %}
+          <li>
+            <span class="{{ choice.correct|yesno:"correct,incorrect" }}">
+            {{ choice.choice_text }}
+            {{ choice.correct|yesno:"correct,incorrect" }}
+            </span>
+          </li>
+        {% endfor %}
+        </ol>
+      {% endif %}
+    {% endfor %}
+  {% elif task.task_type == 2 %}
+    {# ugly #}
+    {# Now we have FillInTask #}
+    Fill In Task! Max points: {{ task.max_points }}<br />
+  {% else %}
+    UNKNOWN TASK: {{ task }}
+  {% endif %}
+  <hr />
+{% endfor %}

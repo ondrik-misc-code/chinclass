@@ -1,8 +1,11 @@
 Test name: {{ test.test_name }}
 <br />
 <hr />
-<form action="{% url 'tests:submit' test.id %}" method="post">
+<form action="{% url 'tests:submit_test' test.id %}" method="post">
 {% csrf_token %}
+<label for="stud_name">Student name:</label>
+<input type="text" name="stud_name" />
+<br />
 {% for task in test.tasks %}
   {% if task.task_type == 1 %}
     {# ugly #}

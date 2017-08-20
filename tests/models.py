@@ -17,7 +17,10 @@ class Test(models.Model):
 
     @property        # only getter
     def tasks(self):
-        return list(self.multiplechoicetask_set.all()) + list(self.fillintask_set.all())
+        return \
+            list(self.mctask_set.all()) + \
+            list(self.fillintask_set.all()) + \
+            list()
 
 
 ###############################
@@ -29,7 +32,9 @@ class Task(models.Model):
         abstract = True
 
 ###############################
-class MultipleChoiceTask(Task):
+class MCTask(Task):
+    ''' A multiple choice task.
+'''
     @property
     def max_points(self):
         result = 0
@@ -44,7 +49,7 @@ class FillInTask(Task):
 
 ###############################
 class MCQuestion(models.Model):
-    task = models.ForeignKey(MultipleChoiceTask, on_delete=models.CASCADE)
+    task = models.ForeignKey(MCTask, on_delete=models.CASCADE)
     points = models.IntegerField(default=0)
     question_text = models.CharField(max_length=400)
 
@@ -61,11 +66,34 @@ class MCQuestionChoice(models.Model):
         return self.choice_text
 
 ###########################################
-class Submission:
-    '''Submission
+class SubmTest(models.Model):
+    '''Submitted solution of a test
 
 TODO
 '''
-    pass
+    student_name = models.CharField(max_length=100)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
 
+    @property        # only getter
+    def tasks(self):
+        return \
+            list(self.submmctask_set.all()) + \
+            list()
 
+###########################################
+class SubmTask(models.Model):
+    '''Submitted solution of a task
+
+'''
+    subm_test = models.ForeignKey(SubmTest, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
+
+###########################################
+class SubmMCTask(SubmTask):
+    '''Submitted solution of a multiple choice task
+
+TODO
+'''
+    task = models.ForeignKey(MCTask, on_delete=models.CASCADE)
