@@ -74,26 +74,44 @@ TODO
     student_name = models.CharField(max_length=100)
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
 
-    @property        # only getter
-    def tasks(self):
-        return \
-            list(self.submmctask_set.all()) + \
-            list()
+    # @property        # only getter
+    # def tasks(self):
+    #     return \
+    #         list(self.submmctask_set.all()) + \
+    #         list()
+
+#
+# COMMENTED OUT BECAUSE IT LOOKS TO BE A BIT OF UNNECESSARY OVERHEAD
+#
+# ###########################################
+# class SubmTask(models.Model):
+#     '''Submitted solution of a task
+#
+# '''
+#     subm_test = models.ForeignKey(SubmTest, on_delete=models.CASCADE)
+#
+#     class Meta:
+#         abstract = True
+#
+# ###########################################
+# class SubmMCTask(SubmTask):
+#     '''Submitted solution of a multiple choice task
+#
+# TODO
+# '''
+#     task = models.ForeignKey(MCTask, on_delete=models.CASCADE)
 
 ###########################################
-class SubmTask(models.Model):
-    '''Submitted solution of a task
-
-'''
-    subm_test = models.ForeignKey(SubmTest, on_delete=models.CASCADE)
-
-    class Meta:
-        abstract = True
-
-###########################################
-class SubmMCTask(SubmTask):
-    '''Submitted solution of a multiple choice task
+class SubmMCQuestion(models.Model):
+    '''Submitted answer to a multiple choice task question
 
 TODO
 '''
-    task = models.ForeignKey(MCTask, on_delete=models.CASCADE)
+    subm_test = models.ForeignKey(SubmTest, on_delete=models.CASCADE)
+    mcquest = models.ForeignKey(MCQuestion, on_delete=models.CASCADE)
+    mcquestchoice = models.ForeignKey(MCQuestionChoice, \
+        on_delete=models.SET_NULL, null=True)
+
+    ###########################################
+    def __str__(self):
+        return str((self.subm_test, self.mcquest, self.mcquestchoice))

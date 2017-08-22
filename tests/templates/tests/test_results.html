@@ -1,10 +1,13 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'tests/style.css' %}" />
+
 <h1>Test results</h1>
 Student name: <b>{{ subm.student_name }}</b>
 <br />
 Test: <b>{{ subm.test }}</b>
 <br />
 
-{% for task in subm.tasks %}
+{% for task in subm.test.tasks %}
   {% if task.task_type == 1 %}
     {# ugly #}
     {# Now we have MCTask #}
@@ -18,10 +21,16 @@ Test: <b>{{ subm.test }}</b>
         <ol type="a">
         {% for choice in question.mcquestionchoice_set.all %}
           <li>
-            <span class="{{ choice.correct|yesno:"correct,incorrect" }}">
+            <span class="{% if choice.id in mcquest_subm and choice.correct %}correct{% elif choice.id in mcquest_subm and not choice.correct %}incorrect{% endif %}">
             {{ choice.choice_text }}
-            {{ choice.correct|yesno:"correct,incorrect" }}
+            {# {{ choice.correct|yesno:"correct,incorrect" }} #}
             </span>
+            {% if choice.id in mcquest_subm and choice.correct %}
+            <b>[correct answer]</b>
+            {% endif %}
+            {% if choice.id in mcquest_subm and not choice.correct %}
+            <b>[incorrect answer]</b>
+            {% endif %}
           </li>
         {% endfor %}
         </ol>

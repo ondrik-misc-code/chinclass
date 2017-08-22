@@ -16,8 +16,8 @@ Test name: {{ test.test_name }}
       ({{ question.points }} points)
       <br />
       {% for choice in question.mcquestionchoice_set.all %}
-      <input type="radio" name="choice:{{ task.id }}:{{ question.id }}" id="choice:{{ task.id }}:{{ question.id }}:{{ choice.id }}" value="{{ choice.id }}" />
-        <label for="choice:{{ task.id }}:{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+      <input type="radio" name="mcquest:{{ question.id }}" id="mcchoice:{{ choice.id }}" value="{{ choice.id }}" />
+        <label for="mcchoice:{{ choice.id }}">{{ choice.choice_text }}</label><br />
       {% endfor %}
     {% endfor %}
   {% elif task.task_type == 2 %}

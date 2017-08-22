@@ -34,15 +34,27 @@ def submit_test(request, test_id):
 
     subm_test = SubmTest()
     subm_test.test = test
-    subm_test.student_name = request.POST['stud_name']
+    subm_test.student_name = request.POST.get('stud_name')
     subm_test.save()
 
-    # add task submissions
+    # add all MC task submissions
     for mctask in test.mctask_set.all():
-        subm_mctask = SubmMCTask()
-        subm_mctask.subm_test = subm_test
-        subm_mctask.task = mctask
-        subm_mctask.save()
+        for mcquest in mctask.mcquestion_set.all():
+            subm_mcquest = SubmMCQuestion()
+            subm_mcquest.subm_test = subm_test
+            subm_mcquest.mcquest = mcquest
+
+            # process the answer
+            subm_choice_id = request.POST.get('mcquest:' + str(mcquest.id))
+            try:
+                subm_choice = mcquest.mcquestionchoice_set.get(pk=subm_choice_id)
+            except (KeyError, MCQuestionChoice.DoesNotExist):
+                pass
+            else:
+                subm_mcquest.mcquestchoice = subm_choice
+
+            subm_mcquest.save()
+            print(subm_mcquest)
 
     return HttpResponseRedirect(reverse('tests:test_results',
         args=(subm_test.id,)))
@@ -52,3 +64,14 @@ class TestResults(generic.DetailView):
     model = SubmTest
     context_object_name = 'subm'
     template_name = 'tests/test_results.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(TestResults, self).get_context_data(**kwargs)
+        # Add in a QuerySet some more
+        subm = context['subm']
+        mcquest_subm_all = subm.submmcquestion_set.all()
+        context['mcquest_subm'] = [mcquest_subm.mcquestchoice.id \
+            for mcquest_subm in mcquest_subm_all \
+            if mcquest_subm.mcquestchoice != None]
+        return context
