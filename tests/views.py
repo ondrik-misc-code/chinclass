@@ -3,11 +3,13 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 
-from .models import Test
-from .models import TaskType
-from .models import MCTask
-from .models import MCQuestion
-from .models import SubmTest
+# from .models import Test
+# from .models import TaskType
+# from .models import MCTask
+# from .models import MCQuestion
+# from .models import SubmTest
+# from .models import SubmTask
+from .models import *
 
 
 ###########################################
@@ -33,12 +35,14 @@ def submit_test(request, test_id):
     subm_test = SubmTest()
     subm_test.test = test
     subm_test.student_name = request.POST['stud_name']
+    subm_test.save()
 
     # add task submissions
-    for test_task in test.tasks:
-        subm_task = SubmTask(task=test_task)
-
-    subm_test.save()
+    for mctask in test.mctask_set.all():
+        subm_mctask = SubmMCTask()
+        subm_mctask.subm_test = subm_test
+        subm_mctask.task = mctask
+        subm_mctask.save()
 
     return HttpResponseRedirect(reverse('tests:test_results',
         args=(subm_test.id,)))
