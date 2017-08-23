@@ -123,6 +123,10 @@ TODO
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
 
     ###########################################
+    def __str__(self):
+        return str(self.test) + ' - ' + self.student_name
+
+    ###########################################
     @property                # only getter
     def score(self):
         '''score(self) -> int
