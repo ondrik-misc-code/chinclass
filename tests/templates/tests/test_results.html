@@ -15,6 +15,11 @@ Test: <b>{{ subm.test }}</b>
     {% for question in task.mcquestion_set.all %}
       {{ question.question_text }}
       ({{ question.points }} points)
+      {% if question.id in correctly_answered_mcquest %}
+      <b>OK</b>
+      {% else %}
+      <b>NOT OK</b>
+      {% endif %}
       <br />
       {% if question.mcquestionchoice_set.all.empty %}
       {% else %}
@@ -36,6 +41,14 @@ Test: <b>{{ subm.test }}</b>
         </ol>
       {% endif %}
     {% endfor %}
+    <b>
+    Score:
+    {% for mctask_id, score in scores_mctask.items %}
+      {% if mctask_id == task.id %}
+        {{ score }}
+      {% endif %}
+    {% endfor %}
+    </b>
   {% elif task.task_type == 2 %}
     {# ugly #}
     {# Now we have FillInTask #}

@@ -10,3 +10,16 @@
   {% endfor %}
   </ul>
 {% endif %}
+
+<h1>Submissions</h1>
+{% if subm_list.empty %}
+  No submissions!
+{% else %}
+  <ul>
+  {% for subm in subm_list %}
+  <li>
+    Submission for {{ subm.test }} by {{ subm.student_name }} <a href="{% url 'tests:test_results' subm.id %}">here</a>. Score: {{ subm.score }}
+  </li>
+  {% endfor %}
+  </ul>
+{% endif %}

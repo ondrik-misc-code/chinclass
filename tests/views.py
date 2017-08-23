@@ -28,8 +28,19 @@ class TestList(generic.ListView):
     context_object_name = 'test_list'
     template_name = 'tests/list.html'
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(TestList, self).get_context_data(**kwargs)
+        # Add in a QuerySet some more
+        context['subm_list'] = SubmTest.objects.all()
+        return context
+
 ###########################################
 def submit_test(request, test_id):
+    '''submit_test(request, test_id)
+
+Submits a test solution and redirects to the result.
+'''
     test = get_object_or_404(Test, pk=test_id)
 
     subm_test = SubmTest()
@@ -74,4 +85,13 @@ class TestResults(generic.DetailView):
         context['mcquest_subm'] = [mcquest_subm.mcquestchoice.id \
             for mcquest_subm in mcquest_subm_all \
             if mcquest_subm.mcquestchoice != None]
+        context['correctly_answered_mcquest'] = [ mcquest_subm.mcquest.id \
+            for mcquest_subm in mcquest_subm_all
+            if mcquest_subm.correct ]
+
+        scores_mctask = { }
+        for mctask in subm.test.mctask_set.all():
+            scores_mctask[mctask.id] = mctask.score_for(subm)
+
+        context['scores_mctask'] = scores_mctask
         return context
